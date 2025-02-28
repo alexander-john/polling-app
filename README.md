@@ -65,7 +65,7 @@ This project uses a Monolithic Architecture. Both the backend and frontend are c
     npm install
     ```
 
-3. Create a .env file in the backend directory and add the following environment variables:
+3. Create a .env file in the root directory and add the following environment variables:
 
     ```plaintext
     PORT=8000
