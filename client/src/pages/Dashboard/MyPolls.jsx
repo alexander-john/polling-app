@@ -16,29 +16,34 @@ import CREATE_ICON from "../../assets/images/my-poll-icon.png";
 const PAGE_SIZE = 10;
 
 const MyPolls = () => {
+  // call the useUserAuth hook to ensure the user is authenticated
   useUserAuth();
 
+  // get the user context and navigate function
   const {user} = useContext(UserContext)
   const navigate = useNavigate()
 
+  // state variables for managing polls, stats, pagination, loading, and filters
   const [allPolls, setAllPolls] = useState([]);
   const [stats, setStats] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-
   const [filterType, setFilterType] = useState("");
 
+  // function to fetch all polls from the API
   const fetchAllPolls = async (overridePage = page) => {
-    if (loading) return;
+    if (loading) return;  // prevent multiple simultaneous requests
 
-    setLoading(true);
+    setLoading(true); // set loading state to true
 
     try {
+      // send a GET request to the API to fetch polls
       const response = await axiosInstance.get(
         `${API_PATHS.POLLS.GET_ALL}?page=${overridePage}&limit=${PAGE_SIZE}&type=${filterType}&creatorId=${user._id}`
       );
 
+      // update state with the fetched polls and stats
       if (response.data?.polls?.length > 0) {
         setAllPolls((prevPolls) =>
           overridePage === 1
@@ -48,25 +53,29 @@ const MyPolls = () => {
         setStats(response.data?.stats || []);
         setHasMore(response.data.polls.length === PAGE_SIZE);
       } else {
-        setHasMore(false);
+        setHasMore(false);  // no more polls to load
       }
     } catch (error) {
+      // log any errors that occur during the request
       console.log("Something went wrong. Please try again.", error);
     } finally {
-      setLoading(false);
+      setLoading(false);  // set loading state to false
     }
   };
 
+  // function to load more polls (for infinite scrolling)
   const loadMorePolls =()=>{
     setPage((prevPage) => prevPage + 1);
   }
 
+  // effect to fetch polls when filterType or user changes
   useEffect(() => {
     setPage(1);
     fetchAllPolls(1);
     return () => {};
   }, [filterType, user]);
 
+  // effect to fetch more polls when the page changes
   useEffect(() => {
     if (page !== 1) {
       fetchAllPolls();
@@ -83,6 +92,7 @@ const MyPolls = () => {
           setFilterType={setFilterType}
         />
 
+        {/* display an empty card if there are no polls */}
         {allPolls.length === 0 && !loading && (
           <EmptyCard
             imgSrc={CREATE_ICON}
@@ -92,6 +102,7 @@ const MyPolls = () => {
           />
         )}
 
+        {/* Infinite scroll component to load more polls */}
         <InfiniteScroll
           dataLength={allPolls.length}
           next={loadMorePolls}
@@ -99,6 +110,7 @@ const MyPolls = () => {
           loader={<h4 className="info-text">Loading...</h4>}
           // endMessage={<p className="info-text">No more polls to display.</p>}
         >
+          {/* render each poll using the PollCard component */}
           {allPolls.map((poll) => (
             <PollCard
               key={`dashboard_${poll._id}`}
