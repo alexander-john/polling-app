@@ -15,6 +15,7 @@ const LoginForm = () => {
 
     // get the updateUser function from UserContext to update user state
     const { updateUser } = useContext(UserContext);
+
     // get the navigate function from react-router-dom to handle navigation
     const navigate = useNavigate();
 
@@ -43,6 +44,7 @@ const LoginForm = () => {
                 email,
                 password,
             });
+            
             // destructure token and user from response data
             const { token, user } = response.data;
 
