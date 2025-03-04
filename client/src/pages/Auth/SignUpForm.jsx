@@ -10,7 +10,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import uploadImage from "../../utils/uploadImage";
 
 const SignUpForm = () => {
-  // state variables for form inputs and error handling
+  // State variables for form inputs and error handling
   const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +18,7 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  // get the updateUser function from userContext and the navigate function from react-router-dom
+  // Get the updateUser function from UserContext and the navigate function from react-router-dom
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -26,9 +26,9 @@ const SignUpForm = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    let profileImageUrl = ""
+    let profileImageUrl = "";
 
-    // validate form inputs
+    // Validate form inputs
     if (!fullName) {
       setError("Please enter the full name");
       return;
@@ -59,7 +59,7 @@ const SignUpForm = () => {
         profileImageUrl = imgUploadRes.imageUrl || "";
       }
 
-      // send a POST request to the register endpoint
+      // Send a POST request to the register endpoint
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         fullName,
         username,
@@ -70,14 +70,14 @@ const SignUpForm = () => {
 
       const { token, user } = response.data;
 
-      // if token is received, store it in local storage, update user context, and navigate to dashboard
+      // If token is received, store it in local storage, update user context, and navigate to dashboard
       if (token) {
         localStorage.setItem("token", token);
         updateUser(user);
         navigate("/dashboard");
       }
     } catch (error) {
-      // handle errors and set error message
+      // Handle errors and set error message
       if (error.response && error.response.data.message) {
         setError(error.response.data.message);
       } else {
