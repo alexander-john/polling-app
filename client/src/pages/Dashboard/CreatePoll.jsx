@@ -11,19 +11,22 @@ import { API_PATHS } from "../../utils/apiPaths";
 import axiosInstance from "../../utils/axiosInstance";
 
 const CreatePoll = () => {
+  // Ensure the user is authenticated
   useUserAuth();
 
+  // Get user context and poll creation/deletion function
   const { user, onPollCreateOrDelete } = useContext(UserContext);
 
+  // State to manage poll data
   const [pollData, setPollData] = useState({
     question: "",
     type: "",
     options: [],
     imageOptions: [],
-
     error: "",
   });
 
+  // Handle value changes in poll data
   const handleValueChange = (key, value) => {
     setPollData((prev) => ({
       ...prev,
@@ -31,19 +34,18 @@ const CreatePoll = () => {
     }));
   };
 
-  // Clear Data
+  // Clear poll data
   const clearData = () => {
     setPollData({
       question: "",
       type: "",
       options: [],
       imageOptions: [],
-
       error: "",
     });
   };
 
-  // Upload Images and Get Image Urls
+  // Upload images and get image URLs
   const updateImageAndGetLink = async (imageOptions) => {
     const optionPromises = imageOptions.map(async (imageOption) => {
       try {
@@ -59,6 +61,7 @@ const CreatePoll = () => {
     return optionArr;
   };
 
+  // Get options based on poll type
   const getOptions = async () => {
     switch (pollData.type) {
       case "single-choice":
@@ -73,32 +76,32 @@ const CreatePoll = () => {
     }
   };
 
-  // Create a New Poll
+  // Create a new poll
   const handleCreatePoll = async () => {
     const { question, type, options, imageOptions, error } = pollData;
 
+    // Validate poll data
     if (!question || !type) {
-      console.log("CREATE:", { question, type, options, error });
       handleValueChange("error", "Question & Type are required");
       return;
     }
 
     if (type === "single-choice" && options.length < 2) {
-      handleValueChange("error", "Enter at two options");
+      handleValueChange("error", "Enter at least two options");
       return;
     }
 
     if (type === "image-based" && imageOptions.length < 2) {
-      handleValueChange("error", "Enter at two options");
+      handleValueChange("error", "Enter at least two options");
       return;
     }
 
     handleValueChange("error", "");
-    console.log("NO_ERR", { pollData });
 
     const optionData = await getOptions();
 
     try {
+      // Send a POST request to create a new poll
       const response = await axiosInstance.post(API_PATHS.POLLS.CREATE, {
         question,
         type,
@@ -108,7 +111,7 @@ const CreatePoll = () => {
 
       if (response) {
         toast.success("Poll Created Successfully!");
-        onPollCreateOrDelete()
+        onPollCreateOrDelete();
         clearData();
       }
     } catch (error) {
