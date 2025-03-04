@@ -6,6 +6,7 @@ import { UserContext } from "../../context/UserContext";
 import TreadingPolls from "./TreadingPolls";
 
 const DashboardLayout = ({ children, activeMenu, stats, showStats }) => {
+  // get the user context
   const { user } = useContext(UserContext);
 
   return (
@@ -20,6 +21,7 @@ const DashboardLayout = ({ children, activeMenu, stats, showStats }) => {
 
           <div className="grow mx-5">{children}</div>
 
+          {/* render the UserDetailsCard and TreadingPolls on medium and larger screens */}
           <div className="hidden md:block mr-5">
             <UserDetailsCard
               profileImageUrl={user && user.profileImageUrl}
