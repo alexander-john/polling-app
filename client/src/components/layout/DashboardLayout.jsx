@@ -11,8 +11,10 @@ const DashboardLayout = ({ children, activeMenu, stats, showStats }) => {
 
   return (
     <div>
+      {/* render the Navbar with the active menu */}
       <Navbar activeMenu={activeMenu} />
 
+      {/* render the layout only if the user is available*/}
       {user && (
         <div className="flex">
           <div className="max-[1080px]:hidden">
@@ -32,6 +34,7 @@ const DashboardLayout = ({ children, activeMenu, stats, showStats }) => {
               totalPollsBookmarked={user && user.totalPollsBookmarked}
             />
 
+            {/* render the TreadingPolls component if showStats is true and stats are available */}
             {showStats && stats?.length > 0 && <TreadingPolls stats={stats} />}
           </div>
         </div>
