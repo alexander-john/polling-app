@@ -1,3 +1,9 @@
+// Summary:
+// This file sets up and configures an Express.js server for the polling app. 
+// It includes middleware for handling CORS and JSON request bodies, connects to the database, 
+// defines routes for authentication and polls, serves static files from the uploads folder, 
+// and starts the server on a specified port.
+
 // Import necessary modules
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
