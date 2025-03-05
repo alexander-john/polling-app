@@ -1,6 +1,13 @@
+// Summary:
+// This file defines the UserDetailsCard component, which displays detailed information about a user.
+// It includes the user's profile picture, full name, username, and statistics such as the total number of polls created, voted on, and bookmarked.
+// The component uses the StatsInfo sub-component to display individual statistics and the CharAvatar component to display a character avatar if no profile picture is provided.
+
+// Import necessary modules and components
 import React from "react";
 import CharAvatar from "./CharAvatar";
 
+// Component to display individual stats information
 const StatsInfo = ({ label, value }) => {
   return (
     <div className="text-center">
@@ -10,6 +17,7 @@ const StatsInfo = ({ label, value }) => {
   );
 };
 
+// Component to display user details card
 const UserDetailsCard = ({
   profileImageUrl,
   fullname,
@@ -20,6 +28,7 @@ const UserDetailsCard = ({
 }) => {
   return (
     <div className="bg-slate-100/50 rounded-lg mt-16 overflow-hidden">
+      {/* Background image and profile picture */}
       <div className="w-full h-32 bg-profile-bg--img bg-cover flex justify-center bg-sky-500 relative">
         <div className="absolute -bottom-10 rounded-full overflow-hidden border-2 border-primary">
           {profileImageUrl ? (
@@ -39,6 +48,7 @@ const UserDetailsCard = ({
         </div>
       </div>
 
+      {/* User details and stats */}
       <div className="mt-12 px-5">
         <div className="text-center pt-1">
           <h5 className="text-lg text-gray-950 font-medium leading-6">
@@ -62,4 +72,5 @@ const UserDetailsCard = ({
   );
 };
 
+// Export the UserDetailsCard component
 export default UserDetailsCard;
