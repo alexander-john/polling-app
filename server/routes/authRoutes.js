@@ -1,3 +1,9 @@
+// Summary:
+// This file defines the routes for user authentication and image upload in the polling app. 
+// It includes routes for user registration, login, fetching user information, and uploading images. 
+// The routes are connected to their respective controller functions and middleware for handling authentication and file uploads. 
+// The router is then exported for use in the main server file.
+
 // Import necessary modules and controllers
 const express = require("express");
 const {
